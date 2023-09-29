@@ -12,6 +12,7 @@ const headerHistoryList = document.querySelector('.header__search-history-list')
 const searchMobileIcon = document.querySelector('.header__mobile-search-icon')
 const headerSearch = document.querySelector('.header__search')
 const registerBtn = document.querySelector(".btn.btn--primary.btn--register")
+const headerSearchInput = document.querySelector(".header__search-input")
 
 modalOverlay.onclick = () => {
     modal.style.display = "none"
@@ -60,6 +61,8 @@ searchMobileIcon.onclick = () => {
 const start = () => {
     getAllProducts(renderProducts);
     handleRegisterForm();
+    getAllProducts2("",renderSearchInput)
+    handleSearch();
 }
 
 const getAllProducts = (callback) => {
@@ -70,7 +73,7 @@ const getAllProducts = (callback) => {
     .then(callback)
 }
 
-const addCustomer = (data, callback) => {
+const addCustomer = (data) => {
     var options = {
         method: 'POST',
         headers: {
@@ -85,6 +88,14 @@ const addCustomer = (data, callback) => {
             switchRegisterBtn.onclick()
         }
     })
+}
+
+const getAllProducts2 = (keyword,callback) => {
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/${keyword}`)
+    .then((response) => {
+        return response.json();
+    })
+    .then(callback)
 }
 
 const renderProducts = (products) => {
@@ -117,10 +128,22 @@ const renderProducts = (products) => {
         `
     })
 
-
     listProductsBlock.innerHTML = htmls.join('')
     categoryList.innerHTML = htmls2.join('')
-    
+}
+
+const renderSearchInput = (products) => {
+    const searchHistoryList = document.querySelector(".header__search-history-list")
+
+    var htmls = products.map(product => {
+        return `
+            <li class="header__search-history-item">
+                <a href="">${product.name}</a>
+            </li>
+        `
+    })
+
+    searchHistoryList.innerHTML = htmls.join('')
 }
 
 const handleRegisterForm = () =>{
@@ -136,6 +159,12 @@ const handleRegisterForm = () =>{
             address: address
         };
         addCustomer(formData)
+    }
+}
+
+const handleSearch = () => {
+    headerSearchInput.onchange = (e) => {
+        getAllProducts2(e.target.value,renderSearchInput)
     }
 }
 
