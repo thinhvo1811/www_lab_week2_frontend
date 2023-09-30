@@ -91,7 +91,7 @@ const addCustomer = (data) => {
 }
 
 const getAllProducts2 = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/${keyword}`)
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
@@ -101,6 +101,11 @@ const getAllProducts2 = (keyword,callback) => {
 const renderProducts = (products) => {
     const listProductsBlock = document.querySelector(".home-product .row.sm-gutter")
     const categoryList = document.querySelector(".category-list")
+    const formatCash = (str) => {
+        return str.split('').reverse().reduce((prev, next, index) => {
+            return ((index % 3) ? next : (next + '.')) + prev
+        })
+    }
 
     var htmls = products.map(product => {
         return `
@@ -109,7 +114,7 @@ const renderProducts = (products) => {
                     <div class="home-product-item__img" style="background-image: url(${product.productImages[0].path});"></div>
                     <h4 class="home-product-item__name">${product.name}</h4>
                     <div class="home-product-item__price">
-                        <span class="home-product-item__price-current">${product.productPrices[0].price}đ <span class="home-product-item__unit">/ ${product.unit}</span></span>
+                        <span class="home-product-item__price-current">${formatCash(String(product.productPrices[0].price))}đ <span class="home-product-item__unit">/ ${product.unit}</span></span>
                     </div>
                     <div class="home-product-item__detail">
                         <span class="home-product-item__brand">${product.manufacturer}</span>
