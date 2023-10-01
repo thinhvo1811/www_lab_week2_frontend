@@ -43,13 +43,13 @@
                         </li>
                     </ul>
     
-                    <ul class="navbar-list">
+                    <ul class="navbar-list navbar-list__right">
                         <li class="navbar-item navbar-item--strong navbar-item--separate navbar-item--register">Đăng Ký</li>
                         <li class="navbar-item navbar-item--strong navbar-item--login">Đăng Nhập</li>
 
-                        <!-- <li class="navbar-item navbar-user">
+                        <li class="navbar-item navbar-user">
                             <img src="https://scontent.fsgn5-2.fna.fbcdn.net/v/t1.6435-9/117354824_792500984821445_4185575291286150690_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=HEgLTVgd_LMAX-YGxN-&_nc_oc=AQl4xNJnSJXRxNzwzCU7zoGCF8fEjyNp8e46iTHtTP_XQ_xhdnB39irK9p2p7w_LAR7PP_OAdr6BuxGvjaztWagp&_nc_ht=scontent.fsgn5-2.fna&oh=00_AfAtBI1aq0bhPCtLkVecwKHMRkTwUSpMFwcwZr9thYcqCA&oe=653D18D3" alt="" class="navbar-user-avatar">
-                            <span class="navbar-user-name">Võ Quốc Thịnh</span>
+                            <span class="navbar-user-name"></span>
 
                             <ul class="navbar-user-menu">
                                 <li class="navbar-user-item">
@@ -61,11 +61,11 @@
                                 <li class="navbar-user-item">
                                     <a href="">Đơn mua</a>
                                 </li>
-                                <li class="navbar-user-item navbar-user-item--separate">
+                                <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
                                 </li>
                             </ul>
-                        </li> -->
+                        </li>
                     </ul>
                 </nav>
 
@@ -385,17 +385,21 @@
                     </div>
 
                     <div class="auth-form__form">
-                        <div class="auth-form__group">
-                            <input type="text" class="auth-form__input" name="register-name" placeholder="Tên của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="text" class="auth-form__input" rules="required" name="register-name" placeholder="Tên của bạn">
+                            <span class="form-message"></span>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="email" class="auth-form__input" name="register-email" placeholder="Email của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="email" class="auth-form__input" rules="required|email" name="register-email" placeholder="Email của bạn">
+                            <span class="form-message"></span>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="text" class="auth-form__input" name="register-phone" placeholder="Số điện thoại của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="text" class="auth-form__input" rules="required" name="register-phone" placeholder="Số điện thoại của bạn">
+                            <span class="form-message"></span>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="text" class="auth-form__input" name="register-address" placeholder="Địa chỉ của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="text" class="auth-form__input" rules="required" name="register-address" placeholder="Địa chỉ của bạn">
+                            <span class="form-message"></span>
                         </div>
                     </div>
 
@@ -415,23 +419,28 @@
                     </div>
 
                     <div class="auth-form__form">
-                        <div class="auth-form__group">
-                            <input type="email" class="auth-form__input" placeholder="Email của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="email" class="auth-form__input" rules="required|email" name="login-email" placeholder="Email của bạn">
+                            <span class="form-message"></span>
                         </div>
-                        <div class="auth-form__group">
-                            <input type="text" class="auth-form__input" placeholder="Số điện thoại của bạn">
+                        <div class="auth-form__group form-group">
+                            <input type="text" class="auth-form__input" rules="required" name="login-phone" placeholder="Số điện thoại của bạn">
+                            <span class="form-message"></span>
                         </div>
                     </div>
 
                     <div class="auth-form__controls">
                         <button class="btn auth-form__controls-back btn--normal">TRỞ LẠI</button>
-                        <button class="btn btn--primary">ĐĂNG NHẬP</button>
+                        <button class="btn btn--primary btn--login btn--login-customer">ĐĂNG NHẬP CHO KHÁCH HÀNG</button>
+                    </div>
+                    <div class="auth-form__controls">
+                        <button class="btn btn--primary btn--login btn--login-employee">ĐĂNG NHẬP CHO NHÂN VIÊN</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="./index.js"></script>
+    <script src="./assets/js/index.js"></script>
 </body>
 </html>
