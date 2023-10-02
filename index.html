@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="./assets/css/responsive.css">
     <link href="./assets/fonts/fontawesome-free-6.4.0-web/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script type = "text/javascript">  
+        function handleLogout2() {  
+           alert("You are Successfully Called the JavaScript function");  
+        }  
+</script>  
 </head>
 <body>
     <div class="app">
@@ -51,15 +56,34 @@
                             <img src="https://scontent.fsgn5-2.fna.fbcdn.net/v/t1.6435-9/117354824_792500984821445_4185575291286150690_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=HEgLTVgd_LMAX-YGxN-&_nc_oc=AQl4xNJnSJXRxNzwzCU7zoGCF8fEjyNp8e46iTHtTP_XQ_xhdnB39irK9p2p7w_LAR7PP_OAdr6BuxGvjaztWagp&_nc_ht=scontent.fsgn5-2.fna&oh=00_AfAtBI1aq0bhPCtLkVecwKHMRkTwUSpMFwcwZr9thYcqCA&oe=653D18D3" alt="" class="navbar-user-avatar">
                             <span class="navbar-user-name"></span>
 
-                            <ul class="navbar-user-menu">
+                            <ul class="navbar-user-menu navbar-user-menu--customer">
+                                <li class="navbar-user-item">
+                                    <a href="./pages/customerInfo.html">Tài khoản của tôi</a>
+                                </li>
+                                <li class="navbar-user-item">
+                                    <a href="">Đơn mua</a>
+                                </li>
+                                <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
+                                    <a href="">Đăng xuất</a>
+                                </li>
+                            </ul>
+
+                            
+                            <ul class="navbar-user-menu navbar-user-menu--employee">
                                 <li class="navbar-user-item">
                                     <a href="">Tài khoản của tôi</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="">Địa chỉ của tôi</a>
+                                    <a href="">Quản lý nhân viên</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="">Đơn mua</a>
+                                    <a href="">Quản lý khách hàng</a>
+                                </li>
+                                <li class="navbar-user-item">
+                                    <a href="">Quản lý sản phẩm</a>
+                                </li>
+                                <li class="navbar-user-item">
+                                    <a href="">Quản lý đơn hàng</a>
                                 </li>
                                 <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
@@ -184,12 +208,6 @@
             </div>
             <ul class="header__sort-bar">
                 <li class="header__sort-item">
-                    <a href="" class="header__sort-link">Liên quan</a>
-                </li>
-                <li class="header__sort-item header__sort-item--active">
-                    <a href="" class="header__sort-link">Mới nhất</a>
-                </li>
-                <li class="header__sort-item">
                     <a href="" class="header__sort-link">Bán chạy</a>
                 </li>
                 <li class="header__sort-item">
@@ -208,7 +226,7 @@
                             </h3>
             
                             <ul class="category-list">
-
+                                
                             </ul>
                         </nav>
                     </div>
@@ -233,38 +251,6 @@
                                 </ul>
                             </div>
                         </div>
-
-                        <nav class="mobile-category">
-                            <ul class="mobile-category__list">
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                                <li class="mobile-category__item">
-                                    <a href="" class="mobile-category__link">Áo khoác</a>
-                                </li>
-                            </ul>
-                        </nav>
 
                         <div class="home-product">
                             <div class="row sm-gutter">
@@ -394,7 +380,7 @@
                             <span class="form-message"></span>
                         </div>
                         <div class="auth-form__group form-group">
-                            <input type="text" class="auth-form__input" rules="required" name="register-phone" placeholder="Số điện thoại của bạn">
+                            <input type="text" class="auth-form__input" rules="required|phone" name="register-phone" placeholder="Số điện thoại của bạn">
                             <span class="form-message"></span>
                         </div>
                         <div class="auth-form__group form-group">
@@ -424,7 +410,7 @@
                             <span class="form-message"></span>
                         </div>
                         <div class="auth-form__group form-group">
-                            <input type="text" class="auth-form__input" rules="required" name="login-phone" placeholder="Số điện thoại của bạn">
+                            <input type="text" class="auth-form__input" rules="required|phone" name="login-phone" placeholder="Số điện thoại của bạn">
                             <span class="form-message"></span>
                         </div>
                     </div>
