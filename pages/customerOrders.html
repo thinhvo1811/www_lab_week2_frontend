@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tài khoản của tôi</title>
+    <title>Đơn mua</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/main.css">
@@ -53,10 +53,10 @@
 
                             <ul class="navbar-user-menu navbar-user-menu--customer">
                                 <li class="navbar-user-item">
-                                    <a href="">Tài khoản của tôi</a>
+                                    <a href="./customerInfo.html">Tài khoản của tôi</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="../pages/customerOrders.html">Đơn mua</a>
+                                    <a href="">Đơn mua</a>
                                 </li>
                                 <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
@@ -214,45 +214,16 @@
         <div class="app__container">
             <div class="grid wide">
                 <div class="row sm-gutter app__content">
-                    <div class="col l-3 m-0 c-0">
+                    <div class="col l-1 m-0 c-0">
                     </div>
     
-                    <div class="col l-6 m-12 c-12">
-                        <div class="auth-form__container auth-form--update">
-                            <div class="auth-form__header auth-form__header--update">
-                                <h3 class="auth-form__heading">Thông tin tài khoản</h3>
-                            </div>
-        
-                            <div class="auth-form__form">
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Name:</span>
-                                    <input type="text" class="auth-form__input" rules="required" name="register-name" placeholder="Tên của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Email:</span>
-                                    <input type="email" class="auth-form__input" rules="required|email" name="register-email" placeholder="Email của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Phone:</span>
-                                    <input type="text" class="auth-form__input" rules="required|phone" name="register-phone" placeholder="Số điện thoại của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Address:</span>
-                                    <input type="text" class="auth-form__input" rules="required" name="register-address" placeholder="Địa chỉ của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                            </div>
-        
-                            <div class="auth-form__controls">
-                                <button class="btn btn--primary btn--update-customer">CẬP NHẬT</button>
-                            </div>
+                    <div class="col l-10 m-12 c-12">
+                        <div class="order-list">
+
                         </div>
                     </div>
-                    <div class="col l-3 m-0 c-0">
 
+                    <div class="col l-1 m-0 c-0">
                     </div>
                 </div>
             </div>
@@ -352,6 +323,6 @@
         </footer>
     </div>
 
-    <script src="../assets/js/customerInfo.js"></script>
+    <script src="../assets/js/customerOrders.js"></script>
 </body>
 </html>

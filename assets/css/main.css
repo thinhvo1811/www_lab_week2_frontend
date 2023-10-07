@@ -289,6 +289,12 @@
     margin-top: 10px;
 }
 
+.auth-form__header.auth-form__header--update{
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 .auth-form__heading{
     font-size: 2.2rem;
     font-weight: 400;
@@ -302,10 +308,22 @@
     cursor: pointer;
 }
 
+.auth-form__group{
+    margin-bottom: 16px;
+}
+
+.auth-form__label{
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.4rem;
+    outline: none;
+    color: var(--text-color);
+}
+
 .auth-form__input{
     width: 100%;
     height: 40px;
-    margin-top: 16px;
+    margin-bottom: 4px;
     padding: 0 12px;
     font-size: 1.4rem;
     border: 1px solid var(--border-color);
@@ -334,7 +352,7 @@
 }
 
 .auth-form__form {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .auth-form__controls{
@@ -990,6 +1008,13 @@
     font-weight: 300;
 }
 
+.home-product-item__brand{
+    width: 80px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 /* footer */
 
 .footer{
@@ -1073,4 +1098,91 @@
     font-size: 1.2rem;
     line-height: 1.6rem;
     padding: 4px 0 0;
+}
+
+.order{
+    display: flex;
+    width: 100%;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    margin-left: 0;
+    padding: 10px 20px;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.order-detail{
+    display: flex;
+    list-style: none;
+    height: 140px;
+    width: 100%;
+    margin: 4px 0px;
+    border-radius: 10px;
+    align-items: center;
+    padding: 0 10px;
+    border: var(--border-color) 1px solid;
+}
+
+.order-head{
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--text-color);
+    margin: 8px 0px;
+}
+
+.order-price{
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--text-color);
+    margin-top: 12px;
+    margin-bottom: 4px;
+    text-align: right;
+}
+
+.order-total,
+.order-id{
+    color: var(--primary-color);
+}
+
+.order-detail__product-img{
+    height:120px;
+    width: 120px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 3px;
+    border: var(--border-color) 1px solid;
+}
+
+.order-detail__product-info{
+    height: 120px;
+    width: 200px;
+    padding: 0 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.order-detail__product-name{
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    font-size: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.order-detail__product-detail{
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-detail__product-quantity{
+    font-size: 16px;
+}
+
+.order-detail__product-price{
+    font-size: 18px;
+    color: var(--primary-color);
 }

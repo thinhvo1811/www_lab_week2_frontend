@@ -20,6 +20,7 @@ const loginCustomerBtn = document.querySelector(".btn.btn--primary.btn--login.bt
 const loginEmployeeBtn = document.querySelector(".btn.btn--primary.btn--login.btn--login-employee")
 const headerSearchInput = document.querySelector(".header__search-input")
 
+
 modalOverlay.onclick = () => {
     modal.style.display = "none"
     registerForm.style.display = "none"
@@ -104,7 +105,7 @@ const getProductsByManufacturer = (e, callback) => {
     }
 }
 
-const registerFunc = (data) => {
+const handleRegister = (data) => {
     var options = {
         method: 'POST',
         headers: {
@@ -128,7 +129,7 @@ const registerFunc = (data) => {
     })
 }
 
-const loginForCustomerFunc = (data,callback) => {
+const handleLoginForCustomer = (data,callback) => {
     fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/login?email=${data.email}&phone=${data.phone}`)
     .then((response) => {
         if(response.ok){
@@ -143,7 +144,7 @@ const loginForCustomerFunc = (data,callback) => {
     .then(callback)
 }
 
-const loginForEmployeeFunc = (data,callback) => {
+const handleLoginForEmployee = (data,callback) => {
     fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/employees/login?email=${data.email}&phone=${data.phone}`)
     .then((response) => {
         if(response.ok){
@@ -217,7 +218,7 @@ const renderProducts = (products) => {
                     </div>
                     <div class="home-product-item__detail">
                         <span class="home-product-item__brand">${product.manufacturer}</span>
-                        <span class="home-product-item__sold">${product.orderDetails[0]!=null ? product.orderDetails.reduce((acc,cur)=>acc+cur.quantity,0) : 0} đã bán</span>
+                        <span class="home-product-item__sold">${product.soldQuantity} đã bán</span>
                     </div>
                 </a>
             </div>
@@ -237,8 +238,6 @@ const renderSearchInput = (products) => {
     })
 
     headerHistoryList.innerHTML = htmls.join('')
-    // headerHistoryList.style.display = "none !important"
-    // headerHistoryList.style.display = "block !important"
 }
 
 const showUserItem = (user) => {
@@ -269,7 +268,6 @@ const showMenuForCustomer = () => {
 }
 
 const showMenuForEmployee = () => {
-    // navbarUserMenu.style.display = "block" 
     var css = '.navbar-user:hover .navbar-user-menu--employee{display: block;}';
     var style = document.createElement('style');
 
@@ -281,6 +279,7 @@ const showMenuForEmployee = () => {
 
     document.getElementsByTagName('head')[0].appendChild(style);
 }
+
 // ----------------------------------------------------------------------------------------------------------------------
 
 // Xử lý event
@@ -298,7 +297,7 @@ const handleRegisterForm = () =>{
         phone: phone,
         address: address
     };
-    registerFunc(formData)
+    handleRegister(formData)
 }
 
 const handleLoginFormForCustomer = () =>{
@@ -308,7 +307,7 @@ const handleLoginFormForCustomer = () =>{
         email: email,
         phone: phone
     };
-    loginForCustomerFunc(formData,handleSuccessLoginForCustomer)
+    handleLoginForCustomer(formData,handleSuccessLoginForCustomer)
 }
 
 const handleLoginFormForEmployee = () =>{
@@ -318,7 +317,7 @@ const handleLoginFormForEmployee = () =>{
         email: email,
         phone: phone
     };
-    loginForEmployeeFunc(formData,handleSuccessLoginForEmployee)
+    handleLoginForEmployee(formData,handleSuccessLoginForEmployee)
 }
 
 const handleSuccessLoginForCustomer = (customer) => {
@@ -352,7 +351,7 @@ const handleSuccessLoginForEmployee = (employee) => {
 }
 
 const handleSearch = () => {
-    headerSearchInput.onchange = (e) => {
+    headerSearchInput.onkeydown = (e) => {
         getAllProducts2(e.target.value,renderSearchInput)
     }
 }
