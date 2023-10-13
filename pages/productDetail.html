@@ -53,10 +53,10 @@
 
                             <ul class="navbar-user-menu navbar-user-menu--customer">
                                 <li class="navbar-user-item">
-                                    <a href="">Tài khoản của tôi</a>
+                                    <a href="./customerInfo.html">Tài khoản của tôi</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="../pages/customerOrders.html">Đơn mua</a>
+                                    <a href="./customerOrders.html">Đơn mua</a>
                                 </li>
                                 <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
@@ -157,45 +157,41 @@
         <div class="app__container">
             <div class="grid wide">
                 <div class="row sm-gutter app__content">
-                    <div class="col l-3 m-0 c-0">
-                    </div>
-    
-                    <div class="col l-6 m-12 c-12">
-                        <div class="auth-form__container auth-form--update">
-                            <div class="auth-form__header auth-form__header--update">
-                                <h3 class="auth-form__heading">Thông tin tài khoản</h3>
-                            </div>
-        
-                            <div class="auth-form__form">
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Name:</span>
-                                    <input type="text" class="auth-form__input" rules="required" name="register-name" placeholder="Tên của bạn">
-                                    <span class="form-message"></span>
+                    <div class="col l-12 m-12 c-12">
+                        <div class="product-detail">
+                            <div class="row sm-gutter">
+                                <div class="col l-5 m-5 c-5">
+                                    <div class="product-detail__img">
+                                        <div class="product-detail__img-main">
+
+                                        </div>
+                                        <div class="product-detail__img-list">
+                                            <ul class="product-detail__img-list--list">
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Email:</span>
-                                    <input type="email" class="auth-form__input" rules="required|email" name="register-email" placeholder="Email của bạn">
-                                    <span class="form-message"></span>
+                                <div class="col l-7 m-7 c-7">
+                                    <div class="product-detail__info">
+                                        <div class="product-detail__info-header">
+                                            <div class="product-detail__info-name"></div>
+                                            <div class="product-detail__info-sold-quantity"></div>
+                                            <div class="product-detail__info-price"></div>
+                                        </div>
+                                        <div class="product-detail__info-footer">
+                                            <div class="product-detail__info-quantity">
+                                                <span class="product-detail__info-quantity-label">Số lượng:</span>
+                                                <input type="number" class="product-detail__info-quantity-input" value="1"></input>
+                                            </div>
+                                            <div class="product-detail__info-btn">
+                                                <div class="product-detail__info-btn--add-cart btn">Thêm vào giỏ hàng</div>
+                                                <div class="product-detail__info-btn--buy btn btn--primary">Mua hàng</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Phone:</span>
-                                    <input type="text" class="auth-form__input" rules="required|phone" name="register-phone" placeholder="Số điện thoại của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                                <div class="auth-form__group form-group">
-                                    <span class="auth-form__label">Address:</span>
-                                    <input type="text" class="auth-form__input" rules="required" name="register-address" placeholder="Địa chỉ của bạn">
-                                    <span class="form-message"></span>
-                                </div>
-                            </div>
-        
-                            <div class="auth-form__controls">
-                                <button class="btn btn--primary btn--update-customer">CẬP NHẬT</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="col l-3 m-0 c-0">
-
                     </div>
                 </div>
             </div>
@@ -295,6 +291,7 @@
         </footer>
     </div>
 
-    <script src="../assets/js/customerInfo.js"></script>
+    <script src="../assets/js/productDetail.js"></script>
+
 </body>
 </html>

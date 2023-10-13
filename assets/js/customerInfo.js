@@ -27,17 +27,53 @@ const getAllProductsByKeyWord = (keyword,callback) => {
     .then(callback)
 }
 
+const renderCartList = () => {
+    const cartListBlock = document.querySelector(".header__cart-list-item")
+    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    const htmls = cartList.map((cart, index) => {
+        return `
+            <li class="header__cart-item">
+                <img src="${cart.path.slice(5,cart.path.length)}" alt="" class="header__cart-item-img">
+                <div class="header__cart-item-info">
+                    <div class="header__cart-item-head">
+                        <h5 class="header__cart-item-name">${cart.name}</h5>
+                        <div class="header__cart-item-price-wrap">
+                            <span class="header__cart-item-price">${cart.price}</span>
+                            <span class="header__cart-item-multiply">x</span>
+                            <span class="header__cart-item-quantity">${cart.quantity}</span>
+                        </div>
+                    </div>
+                    <div class="header__cart-item-body">
+                        <span class="header__cart-item-remove" onclick="removeCartItem(${index})">Xóa</span>
+                    </div>
+                </div>
+            </li>
+        `
+    })
+
+    cartListBlock.innerHTML = htmls.join('')
+}
+
+const renderCartNotice = () => {
+    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    document.querySelector(".header__cart-notice").textContent = cartList.length
+}
+
 const renderSearchInput = (products) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
             </li>
         `
     })
 
     headerHistoryList.innerHTML = htmls.join('')
 }
+
+const setProductStorage = (product) => {
+    sessionStorage.setItem('PRODUCT', product)
+} 
 
 const showCustomerInfoForUpdate = () => {
     if(sessionStorage.getItem('USER'))
@@ -154,6 +190,14 @@ const handleUpdateCustomer = (data) => {
             alert("Email đã tồn tại!")
         }
     })
+}
+
+const removeCartItem = (i) => {
+    var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    oldCart.splice(i,1)
+    localStorage.setItem('CART', JSON.stringify(oldCart))
+    renderCartList()
+    renderCartNotice()
 }
 
 function Validator(formSelector,submitBtn,handleSubmit) {
@@ -279,6 +323,8 @@ const start = () => {
     handleSearch()
     handleShowCustomerItem()
     handleLogout()
+    renderCartList()
+    renderCartNotice()
 }
 
 start();

@@ -8,6 +8,13 @@ const headerHistoryList = document.querySelector('.header__search-history-list')
 const searchMobileIcon = document.querySelector('.header__mobile-search-icon')
 const headerSearch = document.querySelector('.header__search')
 const headerSearchInput = document.querySelector(".header__search-input")
+const addCartBtn = document.querySelector(".product-detail__info-btn--add-cart")
+const productMainImg = document.querySelector(".product-detail__img-main")
+const productName = document.querySelector(".product-detail__info-name")
+const productSoldQuantity = document.querySelector(".product-detail__info-sold-quantity")
+const productPrice = document.querySelector(".product-detail__info-price")
+const productQuantity = document.querySelector(".product-detail__info-quantity-input")
+
 
 headerHistoryList.onmousedown = (e) => {
     e.preventDefault()
@@ -15,14 +22,6 @@ headerHistoryList.onmousedown = (e) => {
 
 searchMobileIcon.onclick = () => {
     headerSearch.style.display = "flex"
-}
-
-const getAllOrders = (callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/orders/${JSON.parse(sessionStorage.getItem('USER')).id}`)
-    .then((response) => {
-        return response.json();
-    })
-    .then(callback)
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
@@ -33,42 +32,39 @@ const getAllProductsByKeyWord = (keyword,callback) => {
     .then(callback)
 }
 
-const renderOrders = (orders) => {
-    const listOrdersBlock = document.querySelector(".order-list")
+const getProductByID = (callback) => {
+    if(sessionStorage.getItem('PRODUCT')){
+        fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/${parseInt(sessionStorage.getItem('PRODUCT'))}`)
+        .then((response) => {
+            return response.json();
+        })
+        .then(callback)
+    }
+}
+
+const renderProduct = (product) => {
     const formatCash = (str) => {
         return str.split('').reverse().reduce((prev, next, index) => {
             return ((index % 3) ? next : (next + '.')) + prev
         })
     }
 
-    var htmls = orders.map(order => {
-        var orderDetails = order.orderDetails.map(orderDetail => {
-            return `
-                <li class="order-detail">
-                    <div class="order-detail__product-img" style="background-image: url(${orderDetail.product.productImages[0].path});"></div>
-                    <div class="order-detail__product-info">
-                        <div class="order-detail__product-name">${orderDetail.product.name}</div>
-                        <div class="order-detail__product-detail">
-                            <div class="order-detail__product-quantity">x${orderDetail.quantity}</div>
-                            <div class="order-detail__product-price">${formatCash(String(orderDetail.price))}đ</div>
-                        </div>
-                    </div>
-                </li>
+    productMainImg.style.backgroundImage = `url('${product.productImages[0].path}')`;
+    productName.textContent = `${product.name}`
+    productSoldQuantity.textContent = `${product.soldQuantity} Đã bán`
+    productPrice.textContent = `${formatCash(String(product.productPrices[0].price))}đ`
 
-            `
-        })
+    const productImgList = document.querySelector(".product-detail__img-list--list")
+    var htmls = product.productImages.map(image => {
         return `
-            <div class="row">
-                <ul class="order">
-                    <div class="order-head">Đơn hàng: <span class="order-id">${order.id}</span></div>
-                        ${orderDetails.join('')}
-                    <div class="order-price">Tổng tiền: <span class="order-total">${formatCash(String(order.orderDetails.reduce((acc,cur)=>acc+cur.price,0)))}đ</span></div>
-                </ul>
-            </div>
+            <li class="product-detail__img-list--item" style="background-image: url(${image.path});" onclick="renderMainImg('${image.path}')"></li>
         `
     })
+    productImgList.innerHTML = htmls.join('')
+}
 
-    listOrdersBlock.innerHTML = htmls.join('')
+const renderMainImg = (path) => {
+    document.querySelector(".product-detail__img-main").style.backgroundImage = `url('${path}')`;
 }
 
 const renderSearchInput = (products) => {
@@ -190,6 +186,22 @@ const handleLogout = () => {
     }
 }
 
+addCartBtn.onclick = () =>{
+    var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+
+    const newCart = [
+    ...oldCart,
+    {
+        path: productMainImg.style.backgroundImage,
+        name: productName.textContent,
+        price: productPrice.textContent,
+        quantity: productQuantity.value
+    }]
+    localStorage.setItem('CART', JSON.stringify(newCart))
+    renderCartList()
+    renderCartNotice()
+}
+
 const removeCartItem = (i) => {
     var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
     oldCart.splice(i,1)
@@ -199,11 +211,11 @@ const removeCartItem = (i) => {
 }
 
 const start = () => {
-    getAllOrders(renderOrders);
     getAllProductsByKeyWord("",renderSearchInput)
     handleSearch()
     handleShowCustomerItem()
     handleLogout()
+    getProductByID(renderProduct)
     renderCartList()
     renderCartNotice()
 }
