@@ -260,7 +260,7 @@ const renderProducts = (products) => {
                     <div class="home-product-item__img" style="background-image: url(${product.productImages[0].path});"></div>
                     <h4 class="home-product-item__name">${product.name}</h4>
                     <div class="home-product-item__price">
-                        <span class="home-product-item__price-current">${formatCash(String(product.productPrices[0].price))}đ <span class="home-product-item__unit">/ ${product.unit}</span></span>
+                        <span class="home-product-item__price-current">${formatCash(String(product.productPrices[product.productPrices.length-1].price))}đ <span class="home-product-item__unit">/ ${product.unit}</span></span>
                     </div>
                     <div class="home-product-item__detail">
                         <span class="home-product-item__brand">${product.manufacturer}</span>

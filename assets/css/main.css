@@ -908,6 +908,7 @@
 }
 
 /* Home sort + filter*/
+.product-chart,
 .order-statictis,
 .home-filter{
     background-color: rgba(0, 0, 0, 0.04);
@@ -1339,6 +1340,7 @@
     margin-left: 20px;
 }
 
+.product-chart__product-list,
 .order-statictis__employee-list,
 .order-statictis__fromdate-input,
 .order-statictis__todate-input{
@@ -1356,4 +1358,14 @@
 
 .order-statictis__order-list{
     margin-top: 20px;
+}
+
+.product-chart__select-product{
+    font-size: 1.4rem;
+    color: var(--text-color);
+    margin-left: 20px;
+}
+
+.product-chart__btn{
+    margin-left: 60px;
 }
