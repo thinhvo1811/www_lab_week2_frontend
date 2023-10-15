@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopee</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="./assets/css/base.css">
-    <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/css/grid.css">
-    <link rel="stylesheet" href="./assets/css/responsive.css">
-    <link href="./assets/fonts/fontawesome-free-6.4.0-web/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/grid.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <link href="../assets/fonts/fontawesome-free-6.4.0-web/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -21,13 +24,13 @@
                         <li class="navbar-item navbar-item--has-qr navbar-item--separate">
                             Vào cửa hàng trên ứng dụng Shopee
                             <div class="navbar__qr">
-                                <img src="./assets/img/qr_code.png" alt="QR Code" class="navbar__qr-img">
+                                <img src="../assets/img/qr_code.png" alt="QR Code" class="navbar__qr-img">
                                 <div class="navbar__qr-apps">
                                     <a href="" class="navbar__qr-link">
-                                        <img src="./assets/img/google_play.png" alt="Google Play" class="navbar__qr-download-img">
+                                        <img src="../assets/img/google_play.png" alt="Google Play" class="navbar__qr-download-img">
                                     </a>
                                     <a href="" class="navbar__qr-link">
-                                        <img src="./assets/img/app_store.png" alt="App Store" class="navbar__qr-download-img">
+                                        <img src="../assets/img/app_store.png" alt="App Store" class="navbar__qr-download-img">
                                     </a>
                                 </div>
                             </div>
@@ -53,10 +56,10 @@
 
                             <ul class="navbar-user-menu navbar-user-menu--customer">
                                 <li class="navbar-user-item">
-                                    <a href="./pages/customerInfo.html">Tài khoản của tôi</a>
+                                    <a href="./customerInfo.html">Tài khoản của tôi</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="./pages/customerOrders.html">Đơn mua</a>
+                                    <a href="./customerOrders.html">Đơn mua</a>
                                 </li>
                                 <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
@@ -66,10 +69,10 @@
                             
                             <ul class="navbar-user-menu navbar-user-menu--employee">
                                 <li class="navbar-user-item">
-                                    <a href="./pages/customerInfo.html">Tài khoản của tôi</a>
+                                    <a href="./customerInfo.html">Tài khoản của tôi</a>
                                 </li>
                                 <li class="navbar-user-item">
-                                    <a href="./pages/orderStatistic.html">Thống kê đơn hàng</a>
+                                    <a href="">Thống kê đơn hàng</a>
                                 </li>
                                 <li class="navbar-user-item navbar-user-item--separate navbar-user-item__logout">
                                     <a href="">Đăng xuất</a>
@@ -121,7 +124,7 @@
 
                             <!-- Empty cart: header__cart-list--empty -->
                             <div class="header__cart-list">
-                                <img src="./assets/img/empty_cart.png" alt="" class="header__cart-empty-img">
+                                <img src="../assets/img/empty_cart.png" alt="" class="header__cart-empty-img">
                                 <span class="header__cart-empty-message">Chưa có sản phẩm</span>
 
                                 <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
@@ -148,45 +151,48 @@
         <div class="app__container">
             <div class="grid wide">
                 <div class="row sm-gutter app__content">
-                    <div class="col l-2 m-0 c-0">
-                        <nav class="category">
-                            <h3 class="category__heading">
-                                Thương hiệu
-                            </h3>
-            
-                            <ul class="category-list">
-                                
-                            </ul>
-                        </nav>
-                    </div>
     
-                    <div class="col l-10 m-12 c-12">
-                        <div class="home-filter hide-on-mobile-tablet">
-                            <span class="home-filter__label">Sắp xếp theo</span>
-                            <button class="home-filter__btn btn btn--primary">Bán chạy</button>
+                    <div class="col l-12 m-12 c-12">
+                        <div class="order-statictis hide-on-mobile-tablet">
+                            <span class="order-statictis__label">Thống kê</span>
 
                             <div class="select-input">
-                                <span class="select-input__label">Giá</span>
+                                <span class="select-input__label">Đơn hàng</span>
                                 <i class="select-input__icon fas fa-angle-down"></i>
 
                                 <!-- List options -->
                                 <ul class="select-input__list">
                                     <li class="select-input__item">
-                                        <a href="" class="select-input__link">Giá thấp đến cao</a>
+                                        <a href="" class="select-input__link order-statictis__by-date">Theo ngày</a>
                                     </li>
                                     <li class="select-input__item">
-                                        <a href="" class="select-input__link">Giá cao đến thấp</a>
+                                        <a href="" class="select-input__link order-statictis__by-period">Theo khoảng thời gian</a>
+                                    </li>
+                                    <li class="select-input__item">
+                                        <a href="" class="select-input__link order-statictis__by-employee-and-period">Theo nhân viên</a>
                                     </li>
                                 </ul>
                             </div>
-                        </div>
-
-                        <div class="home-product">
-                            <div class="row sm-gutter">
-                                <!-- Product item -->
-
+                            <div class="order-statictis__select-employee">
+                                <label for="employee">Chọn nhân viên:</label>
+                                <select name="employee" id="employee" class="order-statictis__employee-list">
+                                </select>
                             </div>
+                            <div class="order-statictis__select-fromdate">
+                                <label for="fromdate" class="fromdate-label">Từ ngày:</label>
+                                <input type="date" id="fromdate" name="fromdate" class="order-statictis__fromdate-input">
+                            </div>
+                            <div class="order-statictis__select-todate">
+                                <label for="todate">Đến ngày:</label>
+                                <input type="date" id="todate" name="todate" class="order-statictis__todate-input">
+                            </div>
+                            <button class="statistic__btn btn btn--primary">Thống kê</button>
                         </div>
+
+                        <div class="order-statictis__order-list">
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -263,14 +269,14 @@
                     <div class="col l-2-4 m-8 c-12">
                         <h3 class="footer__heading">Vào cửa hàng trên ứng dụng</h3>
                         <div class="footer__download">
-                            <img src="./assets/img/qr_code.png" alt="Download QR" class="footer__download-qr">
+                            <img src="../assets/img/qr_code.png" alt="Download QR" class="footer__download-qr">
                             <div class="footer__download-apps">
                                 <a href="" class="footer__download-app-link">
-                                    <img src="./assets/img/google_play.png" alt="Download Google Play" class="footer__download-app-img">
+                                    <img src="../assets/img/google_play.png" alt="Download Google Play" class="footer__download-app-img">
                                 </a>
 
                                 <a href="" class="footer__download-app-link">
-                                    <img src="./assets/img/app_store.png" alt="Download App Store" class="footer__download-app-img">
+                                    <img src="../assets/img/app_store.png" alt="Download App Store" class="footer__download-app-img">
                                 </a>                            
                             </div>
                         </div>
@@ -356,6 +362,6 @@
         </div>
     </div>
 
-    <script src="./assets/js/index.js"></script>
+    <script src="../assets/js/orderStatistic.js"></script>
 </body>
 </html>

@@ -8,6 +8,50 @@ const headerHistoryList = document.querySelector('.header__search-history-list')
 const searchMobileIcon = document.querySelector('.header__mobile-search-icon')
 const headerSearch = document.querySelector('.header__search')
 const headerSearchInput = document.querySelector(".header__search-input")
+const statictisByDate = document.querySelector(".order-statictis__by-date")
+const statictisByPeriod = document.querySelector(".order-statictis__by-period")
+const statictisByEmployeeAndPeriod = document.querySelector(".order-statictis__by-employee-and-period")
+const selectEmployeeForm = document.querySelector(".order-statictis__select-employee")
+const fromdateForm = document.querySelector(".order-statictis__select-fromdate")
+const todateForm = document.querySelector(".order-statictis__select-todate")
+const fromdateLabel = document.querySelector(".fromdate-label")
+const statisticBtn = document.querySelector(".statistic__btn")
+const selectInputLabel = document.querySelector(".select-input__label")
+const employeeSelect = document.querySelector(".order-statictis__employee-list")
+const fromdateInput = document.querySelector(".order-statictis__fromdate-input")
+const todateInput = document.querySelector(".order-statictis__todate-input")
+
+
+statictisByDate.onclick = (e) => {
+    e.preventDefault()
+    fromdateForm.style.display = "block"
+    fromdateLabel.textContent = "Ngày"
+    selectInputLabel.textContent = "Theo ngày"
+    todateForm.style.display = "none"
+    selectEmployeeForm.style.display = "none"
+    statisticBtn.style.display = "block"
+}
+
+statictisByPeriod.onclick = (e) => {
+    e.preventDefault()
+    fromdateForm.style.display = "block"
+    todateForm.style.display = "block"
+    selectEmployeeForm.style.display = "none"
+    fromdateLabel.textContent = "Từ ngày"
+    selectInputLabel.textContent = "Theo khoảng thời gian"
+    statisticBtn.style.display = "block"
+}
+
+statictisByEmployeeAndPeriod.onclick = (e) => {
+    e.preventDefault()
+    fromdateForm.style.display = "block"
+    todateForm.style.display = "block"
+    selectEmployeeForm.style.display = "block"
+    fromdateLabel.textContent = "Từ ngày"
+    selectInputLabel.textContent = "Theo nhân viên"
+    statisticBtn.style.display = "block"
+}
+
 
 headerHistoryList.onmousedown = (e) => {
     e.preventDefault()
@@ -15,14 +59,6 @@ headerHistoryList.onmousedown = (e) => {
 
 searchMobileIcon.onclick = () => {
     headerSearch.style.display = "flex"
-}
-
-const getAllOrders = (callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/orders/${JSON.parse(sessionStorage.getItem('USER')).id}`)
-    .then((response) => {
-        return response.json();
-    })
-    .then(callback)
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
@@ -33,42 +69,87 @@ const getAllProductsByKeyWord = (keyword,callback) => {
     .then(callback)
 }
 
+const getAllEmployees = (callback) => {
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/employees`)
+    .then((response) => {
+        return response.json();
+    })
+    .then(callback)
+}
+
+const getOrdersByDate = (date,callback) => {
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbydate?date=${date}`)
+    .then((response) => {
+        return response.json();
+    })
+    .then(callback)
+}
+
+const getOrdersByPeriod = (fromdate,todate,callback) => {
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbyperiod?fromdate=${fromdate}&todate=${todate}`)
+    .then((response) => {
+        return response.json();
+    })
+    .then(callback)
+}
+
+const getOrdersByEmployeeAndPeriod = (employeeID,fromdate,todate,callback) => {
+    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbyempandperiod?empID=${employeeID}&fromdate=${fromdate}&todate=${todate}`)
+    .then((response) => {
+        return response.json();
+    })
+    .then(callback)
+}
+
 const renderOrders = (orders) => {
-    const listOrdersBlock = document.querySelector(".order-list")
+    const orderList = document.querySelector(".order-statictis__order-list")
     const formatCash = (str) => {
         return str.split('').reverse().reduce((prev, next, index) => {
             return ((index % 3) ? next : (next + '.')) + prev
         })
     }
-
     var htmls = orders.map(order => {
-        var orderDetails = order.orderDetails.map(orderDetail => {
-            return `
-                <li class="order-detail">
-                    <div class="order-detail__product-img" style="background-image: url(${orderDetail.product.productImages[0].path});"></div>
-                    <div class="order-detail__product-info">
-                        <div class="order-detail__product-name">${orderDetail.product.name}</div>
-                        <div class="order-detail__product-detail">
-                            <div class="order-detail__product-quantity">x${orderDetail.quantity}</div>
-                            <div class="order-detail__product-price">${formatCash(String(orderDetail.price))}đ</div>
-                        </div>
-                    </div>
-                </li>
-
-            `
-        })
         return `
-            <div class="row">
-                <ul class="order">
-                    <div class="order-head">Đơn hàng: <span class="order-id">${order.id}</span></div>
-                        ${orderDetails.join('')}
-                    <div class="order-price">Tổng tiền: <span class="order-total">${formatCash(String(order.orderDetails.reduce((acc,cur)=>acc+cur.price,0)))}đ</span></div>
-                </ul>
-            </div>
+            <tr>
+                <th scope="row">${order.id}</th>
+                <td>${order.orderDate[2]}/${order.orderDate[1]}/${order.orderDate[0]} ${order.orderDate[3]}:${order.orderDate[4]}:${order.orderDate[5]}</td>
+                <td>${formatCash(String(order.orderDetails.reduce((acc,cur)=>acc+cur.price,0)))}đ</td>
+            </tr>
         `
     })
+    var html = `
+            <table class="table table-striped table-hover">
+                <thead class="fs-3">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="fs-4">
+                    ${htmls.join('')}
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td></td>
+                        <td>${formatCash(String(orders.reduce((acc,cur)=>acc+cur.orderDetails.reduce((acc,cur)=>acc+cur.price,0),0)))}đ</td>
+                  </tr>
+                </tbody>
+            </table>
+    `
+    orderList.innerHTML = html
+}
 
-    listOrdersBlock.innerHTML = htmls.join('')
+const renderComboboxEmployee = (employees) => {
+    var htmls = employees.map(employee => {
+        return `
+            <option value="${employee.id}">${employee.id}</option>
+        `
+    })
+    employeeSelect.innerHTML = htmls.join('')
+}
+
+const renderMainImg = (path) => {
+    document.querySelector(".product-detail__img-main").style.backgroundImage = `url('${path}')`;
 }
 
 const renderSearchInput = (products) => {
@@ -224,14 +305,56 @@ const removeCartItem = (i) => {
     renderCartNotice()
 }
 
+statisticBtn.onclick = () => {
+    if(selectInputLabel.textContent == "Theo ngày"){
+        const date = fromdateInput.value
+        
+        if(date){
+            getOrdersByDate(date, renderOrders)
+        }
+        else{
+            alert("Vui lòng chọn ngày")
+        }
+    }
+    else if(selectInputLabel.textContent == "Theo khoảng thời gian"){
+        const fromdate = fromdateInput.value
+        const todate = todateInput.value
+
+        if(fromdate && todate){
+            getOrdersByPeriod(fromdate, todate, renderOrders)
+        }
+        else if(!fromdate){
+            alert("Vui lòng chọn từ ngày nào")
+        }
+        else if(!todate){
+            alert("Vui lòng chọn đến ngày nào")
+        }
+    }
+    else if(selectInputLabel.textContent == "Theo nhân viên"){
+        const fromdate = fromdateInput.value
+        const todate = todateInput.value
+        const employeeID = employeeSelect.value
+
+        if(employeeID && fromdate && todate){
+            getOrdersByEmployeeAndPeriod(employeeID, fromdate, todate, renderOrders)
+        }
+        else if(!fromdate){
+            alert("Vui lòng chọn từ ngày nào")
+        }
+        else if(!todate){
+            alert("Vui lòng chọn đến ngày nào")
+        }
+    }
+}
+
 const start = () => {
-    getAllOrders(renderOrders);
     getAllProductsByKeyWord("",renderSearchInput)
     handleSearch()
     handleShowCustomerItem()
     handleLogout()
     renderCartList()
     renderCartNotice()
+    getAllEmployees(renderComboboxEmployee)
 }
 
 start();

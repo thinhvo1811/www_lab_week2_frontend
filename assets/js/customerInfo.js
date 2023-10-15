@@ -29,7 +29,14 @@ const getAllProductsByKeyWord = (keyword,callback) => {
 
 const renderCartList = () => {
     const cartListBlock = document.querySelector(".header__cart-list-item")
-    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var cartList = []
+    if(userCurrent){
+        cartList = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     const htmls = cartList.map((cart, index) => {
         return `
             <li class="header__cart-item">
@@ -55,7 +62,14 @@ const renderCartList = () => {
 }
 
 const renderCartNotice = () => {
-    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var cartList = []
+    if(userCurrent){
+        cartList = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     document.querySelector(".header__cart-notice").textContent = cartList.length
 }
 
@@ -193,9 +207,21 @@ const handleUpdateCustomer = (data) => {
 }
 
 const removeCartItem = (i) => {
-    var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var oldCart = []
+    if(userCurrent){
+        oldCart = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     oldCart.splice(i,1)
-    localStorage.setItem('CART', JSON.stringify(oldCart))
+    if(userCurrent){
+        localStorage.setItem(`CART${userCurrent.id}`, JSON.stringify(oldCart))
+    }
+    else{
+        localStorage.setItem("CART", JSON.stringify(oldCart))
+    }
     renderCartList()
     renderCartNotice()
 }

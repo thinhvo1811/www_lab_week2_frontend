@@ -55,7 +55,7 @@ const renderProduct = (product) => {
     productPrice.textContent = `${formatCash(String(product.productPrices[0].price))}đ`
 
     const productImgList = document.querySelector(".product-detail__img-list--list")
-    var htmls = product.productImages.map(image => {
+    var htmls = product.productImages.map((image,index) => {
         return `
             <li class="product-detail__img-list--item" style="background-image: url(${image.path});" onclick="renderMainImg('${image.path}')"></li>
         `
@@ -81,7 +81,14 @@ const renderSearchInput = (products) => {
 
 const renderCartList = () => {
     const cartListBlock = document.querySelector(".header__cart-list-item")
-    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var cartList = []
+    if(userCurrent){
+        cartList = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     const htmls = cartList.map((cart, index) => {
         return `
             <li class="header__cart-item">
@@ -107,7 +114,14 @@ const renderCartList = () => {
 }
 
 const renderCartNotice = () => {
-    const cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var cartList = []
+    if(userCurrent){
+        cartList = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        cartList = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     document.querySelector(".header__cart-notice").textContent = cartList.length
 }
 
@@ -187,7 +201,14 @@ const handleLogout = () => {
 }
 
 addCartBtn.onclick = () =>{
-    var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var oldCart = []
+    if(userCurrent){
+        oldCart = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
 
     const newCart = [
     ...oldCart,
@@ -197,18 +218,38 @@ addCartBtn.onclick = () =>{
         price: productPrice.textContent,
         quantity: productQuantity.value
     }]
-    localStorage.setItem('CART', JSON.stringify(newCart))
+    if(userCurrent){
+        localStorage.setItem(`CART${userCurrent.id}`, JSON.stringify(newCart))
+    }
+    else{
+        localStorage.setItem("CART", JSON.stringify(newCart))
+    }
+    
     renderCartList()
     renderCartNotice()
 }
 
 const removeCartItem = (i) => {
-    var oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    var userCurrent = JSON.parse(sessionStorage.getItem("USER"))
+    var oldCart = []
+    if(userCurrent){
+        oldCart = JSON.parse(localStorage.getItem(`CART${userCurrent.id}`) || "[]")
+    }
+    else{
+        oldCart = JSON.parse(localStorage.getItem("CART") || "[]")
+    }
     oldCart.splice(i,1)
-    localStorage.setItem('CART', JSON.stringify(oldCart))
+    if(userCurrent){
+        localStorage.setItem(`CART${userCurrent.id}`, JSON.stringify(oldCart))
+    }
+    else{
+        localStorage.setItem("CART", JSON.stringify(oldCart))
+    }
     renderCartList()
     renderCartNotice()
 }
+
+// console.log(JSON.parse(sessionStorage.getItem("USER")).id)
 
 const start = () => {
     getAllProductsByKeyWord("",renderSearchInput)
