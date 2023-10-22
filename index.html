@@ -301,6 +301,14 @@
 
                     <div class="auth-form__form">
                         <div class="auth-form__group form-group">
+                            <input type="text" class="auth-form__input" rules="required" name="register-username" placeholder="Tên đăng nhập">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="auth-form__group form-group">
+                            <input type="password" class="auth-form__input" rules="required|min:6" name="register-password" placeholder="Mật khẩu">
+                            <span class="form-message"></span>
+                        </div>
+                        <div class="auth-form__group form-group">
                             <input type="text" class="auth-form__input" rules="required" name="register-name" placeholder="Tên của bạn">
                             <span class="form-message"></span>
                         </div>
@@ -335,11 +343,11 @@
 
                     <div class="auth-form__form">
                         <div class="auth-form__group form-group">
-                            <input type="email" class="auth-form__input" rules="required|email" name="login-email" placeholder="Email của bạn">
+                            <input type="text" class="auth-form__input" rules="required" name="login-username" placeholder="Tên đăng nhập">
                             <span class="form-message"></span>
                         </div>
                         <div class="auth-form__group form-group">
-                            <input type="text" class="auth-form__input" rules="required|phone" name="login-phone" placeholder="Số điện thoại của bạn">
+                            <input type="password" class="auth-form__input" rules="required|min:6" name="login-password" placeholder="Mật khẩu">
                             <span class="form-message"></span>
                         </div>
                     </div>
@@ -356,6 +364,7 @@
         </div>
     </div>
 
+    <script src="./assets/api-path/basePath.js"></script>
     <script src="./assets/js/index.js"></script>
 </body>
 </html>

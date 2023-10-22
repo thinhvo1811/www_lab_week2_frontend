@@ -20,6 +20,7 @@ const selectInputLabel = document.querySelector(".select-input__label")
 const employeeSelect = document.querySelector(".order-statictis__employee-list")
 const fromdateInput = document.querySelector(".order-statictis__fromdate-input")
 const todateInput = document.querySelector(".order-statictis__todate-input")
+const basePath = sessionStorage.getItem('BASE_PATH')
 
 
 statictisByDate.onclick = (e) => {
@@ -62,15 +63,17 @@ searchMobileIcon.onclick = () => {
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
+    fetch(`${basePath}/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products, setProductStorage)
+    })
 }
 
 const getAllEmployees = (callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/employees`)
+    fetch(`${basePath}/employees`)
     .then((response) => {
         return response.json();
     })
@@ -78,7 +81,7 @@ const getAllEmployees = (callback) => {
 }
 
 const getOrdersByDate = (date,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbydate?date=${date}`)
+    fetch(`${basePath}/orders/searchbydate?date=${date}`)
     .then((response) => {
         return response.json();
     })
@@ -86,7 +89,7 @@ const getOrdersByDate = (date,callback) => {
 }
 
 const getOrdersByPeriod = (fromdate,todate,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbyperiod?fromdate=${fromdate}&todate=${todate}`)
+    fetch(`${basePath}/orders/searchbyperiod?fromdate=${fromdate}&todate=${todate}`)
     .then((response) => {
         return response.json();
     })
@@ -94,7 +97,7 @@ const getOrdersByPeriod = (fromdate,todate,callback) => {
 }
 
 const getOrdersByEmployeeAndPeriod = (employeeID,fromdate,todate,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/orders/searchbyempandperiod?empID=${employeeID}&fromdate=${fromdate}&todate=${todate}`)
+    fetch(`${basePath}/orders/searchbyempandperiod?empID=${employeeID}&fromdate=${fromdate}&todate=${todate}`)
     .then((response) => {
         return response.json();
     })
@@ -152,11 +155,11 @@ const renderMainImg = (path) => {
     document.querySelector(".product-detail__img-main").style.backgroundImage = `url('${path}')`;
 }
 
-const renderSearchInput = (products) => {
+const renderSearchInput = (products, callback) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="(${callback})(${product.id})">${product.name}</a>
             </li>
         `
     })
@@ -259,14 +262,14 @@ const handleSearch = () => {
     }
 }
 
-const handleShowCustomerItem = () => {
+const handleShowUserItem = () => {
     if(sessionStorage.getItem('USER'))
     {
         showUserItem(JSON.parse(sessionStorage.getItem('USER')))
-        if(JSON.parse(sessionStorage.getItem('USER')).name){
+        if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'CUSTOMER'){
             showMenuForCustomer()
         }
-        else{
+        else if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'EMPLOYEE'){
             showMenuForEmployee()
         }
     }
@@ -350,7 +353,7 @@ statisticBtn.onclick = () => {
 const start = () => {
     getAllProductsByKeyWord("",renderSearchInput)
     handleSearch()
-    handleShowCustomerItem()
+    handleShowUserItem()
     handleLogout()
     renderCartList()
     renderCartNotice()

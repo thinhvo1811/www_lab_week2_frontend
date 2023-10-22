@@ -19,7 +19,15 @@ const registerBtn = document.querySelector(".btn.btn--primary.btn--register")
 const loginCustomerBtn = document.querySelector(".btn.btn--primary.btn--login.btn--login-customer")
 const loginEmployeeBtn = document.querySelector(".btn.btn--primary.btn--login.btn--login-employee")
 const headerSearchInput = document.querySelector(".header__search-input")
-
+const usernameRegister = document.querySelector('input[name="register-username"]')
+const passwordRegister = document.querySelector('input[name="register-password"]')
+const nameRegister = document.querySelector('input[name="register-name"]')
+const emailRegister = document.querySelector('input[name="register-email"]')
+const phoneRegister = document.querySelector('input[name="register-phone"]')
+const addressRegister = document.querySelector('input[name="register-address"]')
+const usernameLogin = document.querySelector('input[name="login-username"]')
+const passwordLogin = document.querySelector('input[name="login-password"]')
+const basePath = sessionStorage.getItem("BASE_PATH")
 
 modalOverlay.onclick = () => {
     modal.style.display = "none"
@@ -69,15 +77,17 @@ searchMobileIcon.onclick = () => {
 // ----------------------------------------------------------------------------------------------------------------------
 
 const getAllProducts = (callback) => {
-    fetch('http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products')
+    fetch(`${basePath}/products`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products,setProductStorage)
+    })
 }
 
 const getAllManufacturers = (callback) => {
-    fetch('http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/manufacturers')
+    fetch(`${basePath}/products/manufacturers`)
     .then((response) => {
         return response.json();
     })
@@ -87,18 +97,20 @@ const getAllManufacturers = (callback) => {
 const getProductsByManufacturer = (e, callback) => {
     e.preventDefault()
     const categoryItems2 = document.querySelectorAll(".category-item")
-    for(i = 0; i < categoryItems2.length; i++){
+    for(var i = 0; i < categoryItems2.length; i++){
         if(categoryItems2[i].classList.contains("category-item--active")){
             categoryItems2[i].classList.remove("category-item--active")
         }
     }
     e.target.parentElement.classList.add("category-item--active")
     if(e.target.innerText!='Tất cả'){
-        fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/filter?manufacturer=${e.target.innerText}`)
+        fetch(`${basePath}/products/filter?manufacturer=${e.target.innerText}`)
         .then((response) => {
             return response.json();
         })
-        .then(callback)
+        .then(products => {
+            callback(products, setProductStorage)
+        })
     }
     else{
         getAllProducts(renderProducts);
@@ -113,15 +125,17 @@ const handleRegister = (data) => {
         },
         body: JSON.stringify(data)
     };
-    fetch('http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers', options)
+    fetch(`${basePath}/customers`, options)
     .then((response) => {
         if(response.ok){
             alert("Bạn đã đăng ký thành công!")
             switchRegisterBtn.onclick()
-            document.querySelector('input[name="register-name"]').value = ""
-            document.querySelector('input[name="register-email"]').value = ""
-            document.querySelector('input[name="register-phone"]').value = ""
-            document.querySelector('input[name="register-address"]').value = ""
+            usernameRegister.value = ""
+            passwordRegister.value = ""
+            nameRegister.value = ""
+            emailRegister.value = ""
+            phoneRegister.value = ""
+            addressRegister.value = ""
         }
         else{
             alert("Email đã tồn tại!")
@@ -130,41 +144,43 @@ const handleRegister = (data) => {
 }
 
 const handleLoginForCustomer = (data,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/login?email=${data.email}&phone=${data.phone}`)
+    fetch(`${basePath}/customers/login?username=${data.username}&password=${data.password}`)
     .then((response) => {
         if(response.ok){
-            document.querySelector('input[name="login-email"]').value = ""
-            document.querySelector('input[name="login-phone"]').value = ""
+            usernameLogin.value = ""
+            passwordLogin.value = ""
             return response.json();
         }
         else{
-            alert("Tài khoản email hoặc số điện thoại không chính xác!")
+            alert("Tên đăng nhập hoặc mật khẩu không chính xác!")
         }
     })
     .then(callback)
 }
 
 const handleLoginForEmployee = (data,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/employees/login?email=${data.email}&phone=${data.phone}`)
+    fetch(`${basePath}/employees/login?username=${data.username}&password=${data.password}`)
     .then((response) => {
         if(response.ok){
-            document.querySelector('input[name="login-email"]').value = ""
-            document.querySelector('input[name="login-phone"]').value = ""
+            usernameLogin.value = ""
+            passwordLogin.value = ""
             return response.json();
         }
         else{
-            alert("Tài khoản email hoặc số điện thoại không chính xác!")
+            alert("Tên đăng nhập hoặc mật khẩu không chính xác!")
         }
     })
     .then(callback)
 }
 
 const getAllProducts2 = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
+    fetch(`${basePath}/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products, setProductStorage)
+    })
 }
 
 // ----------------------------------------------------------------------------------------------------------------------
@@ -238,14 +254,14 @@ const renderCategoryList = (manufacturers) => {
     categoryList.innerHTML = allItem+htmls.join('')
 
     const categoryItems = document.querySelectorAll(".category-item")
-    for(i = 0; i < categoryItems.length; i++){
+    for(var i = 0; i < categoryItems.length; i++){
         categoryItems[i].onclick = (e) => {
             getProductsByManufacturer(e, renderProducts)
         }
     }
 }
 
-const renderProducts = (products) => {
+const renderProducts = (products, callback) => {
     const listProductsBlock = document.querySelector(".home-product .row.sm-gutter")
     const formatCash = (str) => {
         return str.split('').reverse().reduce((prev, next, index) => {
@@ -256,7 +272,7 @@ const renderProducts = (products) => {
     var htmls = products.map(product => {
         return `
             <div class="col l-2-4 m-4 c-6">
-                <a class="home-product-item" href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">
+                <a class="home-product-item" href="../pages/productDetail.html" onclick="(${callback})(${product.id})">
                     <div class="home-product-item__img" style="background-image: url(${product.productImages[0].path});"></div>
                     <h4 class="home-product-item__name">${product.name}</h4>
                     <div class="home-product-item__price">
@@ -278,11 +294,11 @@ const setProductStorage = (product) => {
     sessionStorage.setItem('PRODUCT', product)
 } 
 
-const renderSearchInput = (products) => {
+const renderSearchInput = (products, callback) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="(${callback})(${product.id})">${product.name}</a>
             </li>
         `
     })
@@ -337,11 +353,16 @@ const showMenuForEmployee = () => {
 
 
 const handleRegisterForm = () =>{
-    var name = document.querySelector('input[name="register-name"]').value
-    var email = document.querySelector('input[name="register-email"]').value
-    var phone = document.querySelector('input[name="register-phone"]').value
-    var address = document.querySelector('input[name="register-address"]').value
+    var username = usernameRegister.value
+    var password = passwordRegister.value
+    var name = nameRegister.value
+    var email = emailRegister.value
+    var phone = phoneRegister.value
+    var address = addressRegister.value
+
     var formData = {
+        username: username,
+        password: password,
         name: name,
         email: email,
         phone: phone,
@@ -351,21 +372,21 @@ const handleRegisterForm = () =>{
 }
 
 const handleLoginFormForCustomer = () =>{
-    var email = document.querySelector('input[name="login-email"]').value
-    var phone = document.querySelector('input[name="login-phone"]').value
+    var username = usernameLogin.value
+    var password = passwordLogin.value
     var formData = {
-        email: email,
-        phone: phone
+        username: username,
+        password: password
     };
     handleLoginForCustomer(formData,handleSuccessLoginForCustomer)
 }
 
 const handleLoginFormForEmployee = () =>{
-    var email = document.querySelector('input[name="login-email"]').value
-    var phone = document.querySelector('input[name="login-phone"]').value
+    var username = usernameLogin.value
+    var password = passwordLogin.value
     var formData = {
-        email: email,
-        phone: phone
+        username: username,
+        password: password
     };
     handleLoginForEmployee(formData,handleSuccessLoginForEmployee)
 }
@@ -374,17 +395,17 @@ const handleSuccessLoginForCustomer = (customer) => {
     if(customer){
         sessionStorage.setItem('USER', JSON.stringify(customer))
     }
-    handleShowCustomerItem()
+    handleShowUserItem()
 }
 
-const handleShowCustomerItem = () => {
+const handleShowUserItem = () => {
     if(sessionStorage.getItem('USER'))
     {
         showUserItem(JSON.parse(sessionStorage.getItem('USER')))
-        if(JSON.parse(sessionStorage.getItem('USER')).name){
+        if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'CUSTOMER'){
             showMenuForCustomer()
         }
-        else{
+        else if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'EMPLOYEE'){
             showMenuForEmployee()
         }
     }
@@ -397,7 +418,7 @@ const handleSuccessLoginForEmployee = (employee) => {
     if(employee){
         sessionStorage.setItem('USER', JSON.stringify(employee))
     }
-    handleShowCustomerItem()
+    handleShowUserItem()
 }
 
 const handleSearch = () => {
@@ -407,11 +428,11 @@ const handleSearch = () => {
 }
 
 const handleLogout = () => {
-    for(i = 0; i < navbarUserLogout.length; i++){
+    for(var i = 0; i < navbarUserLogout.length; i++){
         navbarUserLogout[i].onclick = (e) => {
             e.preventDefault()
             sessionStorage.removeItem('USER')
-            handleShowCustomerItem()
+            handleShowUserItem()
         }
     }
 }
@@ -503,41 +524,40 @@ function Validator(formSelector,submitBtn,handleSubmit) {
             input.onblur = handleValidate;
             input.oninput = handleClearError;
         }
+    }
 
-        function handleValidate(event){
-            const rules = formRules[event.target.name]
-            let errorMessage
+    function handleValidate(event){
+        const rules = formRules[event.target.name]
+        let errorMessage
 
-            rules.some((rule) => {
-                errorMessage = rule(event.target.value)
-                return errorMessage
-            })
-            
-            if(errorMessage){
-                const formGroup = getParent(event.target, '.form-group')
-                if(formGroup){
-                    formGroup.classList.add('invalid')
-                    const formMessage = formGroup.querySelector('.form-message')
-                    if(formMessage){
-                        formMessage.innerText = errorMessage
-                    }
-                }
-            }
-
-            return !errorMessage
-        }
-
-        function handleClearError(event){
+        rules.some((rule) => {
+            errorMessage = rule(event.target.value)
+            return errorMessage
+        })
+        
+        if(errorMessage){
             const formGroup = getParent(event.target, '.form-group')
-            if(formGroup.classList.contains('invalid')){
-                formGroup.classList.remove('invalid')
+            if(formGroup){
+                formGroup.classList.add('invalid')
                 const formMessage = formGroup.querySelector('.form-message')
                 if(formMessage){
-                    formMessage.innerText = ''
+                    formMessage.innerText = errorMessage
                 }
             }
         }
 
+        return !errorMessage
+    }
+
+    function handleClearError(event){
+        const formGroup = getParent(event.target, '.form-group')
+        if(formGroup.classList.contains('invalid')){
+            formGroup.classList.remove('invalid')
+            const formMessage = formGroup.querySelector('.form-message')
+            if(formMessage){
+                formMessage.innerText = ''
+            }
+        }
     }
 
     submitBtn.onclick = () => {
@@ -570,7 +590,7 @@ const start = () => {
     Validator('.auth-form--login', loginEmployeeBtn, handleLoginFormForEmployee)
     handleLogout();
     handleSearch();
-    handleShowCustomerItem();
+    handleShowUserItem();
     renderCartList()
     renderCartNotice()
 }

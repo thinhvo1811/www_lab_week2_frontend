@@ -10,6 +10,7 @@ const headerSearch = document.querySelector('.header__search')
 const headerSearchInput = document.querySelector(".header__search-input")
 const productSelect = document.querySelector(".product-chart__product-list")
 const chartBtn = document.querySelector(".product-chart__btn")
+const basePath = sessionStorage.getItem('BASE_PATH')
 
 
 headerHistoryList.onmousedown = (e) => {
@@ -21,15 +22,17 @@ searchMobileIcon.onclick = () => {
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
+    fetch(`${basePath}/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products, setProductStorage)
+    })
 }
 
 const getAllProducts = (callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products`)
+    fetch(`${basePath}/products`)
     .then((response) => {
         return response.json();
     })
@@ -37,7 +40,7 @@ const getAllProducts = (callback) => {
 }
 
 const getProductByID = (id,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/${id}`)
+    fetch(`${basePath}/products/${id}`)
     .then((response) => {
         return response.json();
     })
@@ -67,11 +70,11 @@ const renderMainImg = (path) => {
     document.querySelector(".product-detail__img-main").style.backgroundImage = `url('${path}')`;
 }
 
-const renderSearchInput = (products) => {
+const renderSearchInput = (products, callback) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="(${callback})(${product.id})">${product.name}</a>
             </li>
         `
     })
@@ -174,14 +177,14 @@ const handleSearch = () => {
     }
 }
 
-const handleShowCustomerItem = () => {
+const handleShowUserItem = () => {
     if(sessionStorage.getItem('USER'))
     {
         showUserItem(JSON.parse(sessionStorage.getItem('USER')))
-        if(JSON.parse(sessionStorage.getItem('USER')).name){
+        if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'CUSTOMER'){
             showMenuForCustomer()
         }
-        else{
+        else if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'EMPLOYEE'){
             showMenuForEmployee()
         }
     }
@@ -260,7 +263,7 @@ chartBtn.onclick = () => {
 const start = () => {
     getAllProductsByKeyWord("",renderSearchInput)
     handleSearch()
-    handleShowCustomerItem()
+    handleShowUserItem()
     handleLogout()
     renderCartList()
     renderCartNotice()

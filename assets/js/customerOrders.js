@@ -2,12 +2,12 @@ const navbarUser = document.querySelector(".navbar-item.navbar-user")
 const register = document.querySelector('.navbar-item--register')
 const login = document.querySelector('.navbar-item--login')
 const navbarUserName = document.querySelector(".navbar-user-name")
-const navbarUserMenu = document.querySelector(".navbar-user-menu")
 const navbarUserLogout = document.querySelectorAll(".navbar-user-item__logout")
 const headerHistoryList = document.querySelector('.header__search-history-list')
 const searchMobileIcon = document.querySelector('.header__mobile-search-icon')
 const headerSearch = document.querySelector('.header__search')
 const headerSearchInput = document.querySelector(".header__search-input")
+const basePath = sessionStorage.getItem('BASE_PATH')
 
 headerHistoryList.onmousedown = (e) => {
     e.preventDefault()
@@ -18,7 +18,7 @@ searchMobileIcon.onclick = () => {
 }
 
 const getAllOrders = (callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/orders/${JSON.parse(sessionStorage.getItem('USER')).id}`)
+    fetch(`${basePath}/customers/orders/${JSON.parse(sessionStorage.getItem('USER')).id}`)
     .then((response) => {
         return response.json();
     })
@@ -26,11 +26,13 @@ const getAllOrders = (callback) => {
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
+    fetch(`${basePath}/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products, setProductStorage)
+    })
 }
 
 const renderOrders = (orders) => {
@@ -71,11 +73,11 @@ const renderOrders = (orders) => {
     listOrdersBlock.innerHTML = htmls.join('')
 }
 
-const renderSearchInput = (products) => {
+const renderSearchInput = (products, callback) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="(${callback})(${product.id})">${product.name}</a>
             </li>
         `
     })
@@ -178,14 +180,14 @@ const handleSearch = () => {
     }
 }
 
-const handleShowCustomerItem = () => {
+const handleShowUserItem = () => {
     if(sessionStorage.getItem('USER'))
     {
         showUserItem(JSON.parse(sessionStorage.getItem('USER')))
-        if(JSON.parse(sessionStorage.getItem('USER')).name){
+        if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'CUSTOMER'){
             showMenuForCustomer()
         }
-        else{
+        else if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'EMPLOYEE'){
             showMenuForEmployee()
         }
     }
@@ -195,7 +197,7 @@ const handleShowCustomerItem = () => {
 }
 
 const handleLogout = () => {
-    for(i = 0; i < navbarUserLogout.length; i++){
+    for(var i = 0; i < navbarUserLogout.length; i++){
         navbarUserLogout[i].onclick = (e) => {
             e.preventDefault()
             sessionStorage.removeItem('USER')
@@ -228,7 +230,7 @@ const start = () => {
     getAllOrders(renderOrders);
     getAllProductsByKeyWord("",renderSearchInput)
     handleSearch()
-    handleShowCustomerItem()
+    handleShowUserItem()
     handleLogout()
     renderCartList()
     renderCartNotice()

@@ -10,6 +10,11 @@ const headerHistoryList = document.querySelector('.header__search-history-list')
 const searchMobileIcon = document.querySelector('.header__mobile-search-icon')
 const headerSearch = document.querySelector('.header__search')
 const headerSearchInput = document.querySelector(".header__search-input")
+const nameUser = document.querySelector('input[name="user-name"]')
+const emailUser = document.querySelector('input[name="user-email"]')
+const phoneUser = document.querySelector('input[name="user-phone"]')
+const addressUser = document.querySelector('input[name="user-address"]')
+const basePath = sessionStorage.getItem('BASE_PATH')
 
 headerHistoryList.onmousedown = (e) => {
     e.preventDefault()
@@ -20,11 +25,13 @@ searchMobileIcon.onclick = () => {
 }
 
 const getAllProductsByKeyWord = (keyword,callback) => {
-    fetch(`http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/products/search?keyword=${keyword}`)
+    fetch(`${basePath}/products/search?keyword=${keyword}`)
     .then((response) => {
         return response.json();
     })
-    .then(callback)
+    .then(products => {
+        callback(products, setProductStorage)
+    })
 }
 
 const renderCartList = () => {
@@ -73,11 +80,11 @@ const renderCartNotice = () => {
     document.querySelector(".header__cart-notice").textContent = cartList.length
 }
 
-const renderSearchInput = (products) => {
+const renderSearchInput = (products, callback) => {
     var htmls = products.map(product => {
         return `
             <li class="header__search-history-item">
-                <a href="../pages/productDetail.html" onclick="setProductStorage('${product.id}')">${product.name}</a>
+                <a href="../pages/productDetail.html" onclick="(${callback})(${product.id})">${product.name}</a>
             </li>
         `
     })
@@ -92,10 +99,10 @@ const setProductStorage = (product) => {
 const showCustomerInfoForUpdate = () => {
     if(sessionStorage.getItem('USER'))
     {
-        document.querySelector('input[name="register-name"]').value = JSON.parse(sessionStorage.getItem('USER')).name
-        document.querySelector('input[name="register-email"]').value = JSON.parse(sessionStorage.getItem('USER')).email
-        document.querySelector('input[name="register-phone"]').value = JSON.parse(sessionStorage.getItem('USER')).phone
-        document.querySelector('input[name="register-address"]').value = JSON.parse(sessionStorage.getItem('USER')).address
+        nameUser.value = JSON.parse(sessionStorage.getItem('USER')).name
+        emailUser.value = JSON.parse(sessionStorage.getItem('USER')).email
+        phoneUser.value = JSON.parse(sessionStorage.getItem('USER')).phone
+        addressUser.value = JSON.parse(sessionStorage.getItem('USER')).address
     }
 }
 
@@ -144,14 +151,14 @@ const handleSearch = () => {
     }
 }
 
-const handleShowCustomerItem = () => {
+const handleShowUserItem = () => {
     if(sessionStorage.getItem('USER'))
     {
         showUserItem(JSON.parse(sessionStorage.getItem('USER')))
-        if(JSON.parse(sessionStorage.getItem('USER')).name){
+        if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'CUSTOMER'){
             showMenuForCustomer()
         }
-        else{
+        else if(JSON.parse(sessionStorage.getItem('USER')).user.type === 'EMPLOYEE'){
             showMenuForEmployee()
         }
     }
@@ -161,7 +168,7 @@ const handleShowCustomerItem = () => {
 }
 
 const handleLogout = () => {
-    for(i = 0; i < navbarUserLogout.length; i++){
+    for(var i = 0; i < navbarUserLogout.length; i++){
         navbarUserLogout[i].onclick = (e) => {
             e.preventDefault()
             sessionStorage.removeItem('USER')
@@ -171,10 +178,10 @@ const handleLogout = () => {
 }
 
 const handleUpdateCustomerForm = () =>{
-    var name = document.querySelector('input[name="register-name"]').value
-    var email = document.querySelector('input[name="register-email"]').value
-    var phone = document.querySelector('input[name="register-phone"]').value
-    var address = document.querySelector('input[name="register-address"]').value
+    var name = nameUser.value
+    var email = emailUser.value
+    var phone = phoneUser.value
+    var address = addressUser.value
     var formData = {
         id: JSON.parse(sessionStorage.getItem('USER')).id,
         name: name,
@@ -182,10 +189,10 @@ const handleUpdateCustomerForm = () =>{
         phone: phone,
         address: address
     };
-    handleUpdateCustomer(formData)
+    handleUpdateCustomer(formData,handleSuccessUpdateCustomer)
 }
 
-const handleUpdateCustomer = (data) => {
+const handleUpdateCustomer = (data, callback) => {
     var options = {
         method: 'POST',
         headers: {
@@ -193,17 +200,24 @@ const handleUpdateCustomer = (data) => {
         },
         body: JSON.stringify(data)
     };
-    fetch('http://localhost:8080/Gradle___vn_edu_iuh_fit___week02_lab_voquocthinh_20078241_1_0_SNAPSHOT_war/api/customers/update', options)
+    fetch(`${basePath}/customers/update`, options)
     .then((response) => {
         if(response.ok){
-            alert("Bạn đã cập nhật thành công!")
-            sessionStorage.setItem('USER', JSON.stringify(data))
-            showCustomerInfoForUpdate()
+            return response.json();            
         }
         else{
             alert("Email đã tồn tại!")
         }
     })
+    .then(callback)
+}
+
+const handleSuccessUpdateCustomer = (customer) => {
+    if(customer){
+        alert("Bạn đã cập nhật thành công!")
+        sessionStorage.setItem('USER', JSON.stringify(customer))
+        showCustomerInfoForUpdate()
+    }
 }
 
 const removeCartItem = (i) => {
@@ -347,7 +361,7 @@ const start = () => {
     getAllProductsByKeyWord("",renderSearchInput)
     showCustomerInfoForUpdate();
     handleSearch()
-    handleShowCustomerItem()
+    handleShowUserItem()
     handleLogout()
     renderCartList()
     renderCartNotice()
